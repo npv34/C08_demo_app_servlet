@@ -54,27 +54,28 @@
   <div class="col-12 col-md-12">
     <div class="card">
       <div class="card-header">
-        Add new user
+        Update user
       </div>
       <div class="card-body">
-        <form action="/users?action=create" method="post">
+        <form action="${pageContext.request.contextPath}/users?action=update&email=<c:out value="${user.getEmail()}"/>" method="post">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Name</label>
-            <input type="text" name="name" class="form-control" id="" aria-describedby="emailHelp">
+            <input type="text" name="name" value="<c:out value="${user.getName()}"/>" class="form-control" id="" aria-describedby="emailHelp">
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input type="email" name="email" class="form-control" disabled value="<c:out value="${user.getEmail()}"/>" id="exampleInputEmail1" aria-describedby="emailHelp">
           </div>
           <div class="mb-3">
             <label for="" class="form-label">Phone</label>
-            <input type="text" name="phone" class="form-control" id="phone">
+            <input type="text" name="phone" value="<c:out value="${user.getPhone()}"/>" class="form-control" id="phone">
           </div>
           <div class="mb-3">
             <label for="" class="form-label">Address</label>
-            <input type="text" name="address" class="form-control" id="address">
+            <input type="text" name="address" value="<c:out value="${user.getAddress()}"/>" class="form-control" id="address">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
+          <a href="/users" class="btn btn-info">Cancel</a>
         </form>
       </div>
     </div>

@@ -6,11 +6,17 @@ public class User {
     protected String phone;
     protected String address;
 
+    protected String role;
+
     public User(String name, String email, String phone, String address) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getName() {
@@ -43,5 +49,9 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getRole() {
+        return role != null ? role : "Chua phan loai";
     }
 }

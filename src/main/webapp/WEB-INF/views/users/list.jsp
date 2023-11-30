@@ -61,21 +61,27 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Address</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${users}" var="user">
                     <tr>
-                        <th scope="row">1</th>
                         <td><c:out value="${user.getName()}"/></td>
                         <td><c:out value="${user.getEmail()}"/></td>
                         <td><c:out value="${user.getPhone()}"/></td>
+                        <td><c:out value="${user.getRole()}"/></td>
+
                         <td><c:out value="${user.getAddress()}"/></td>
+                        <td>
+                            <a onclick="return confirm('Are you sure?')" href="${pageContext.request.contextPath}/users?action=delete&email=<c:out value="${user.getEmail()}"/>" class="btn btn-danger">Delete</a>
+                            <a href="${pageContext.request.contextPath}/users?action=update&email=<c:out value="${user.getEmail()}"/>" class="btn btn-primary">Update</a>
+                        </td>
                     </tr>
                     </c:forEach>
                     </tbody>
