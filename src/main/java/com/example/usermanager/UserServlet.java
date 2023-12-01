@@ -1,27 +1,18 @@
 package com.example.usermanager;
 import com.example.usermanager.Controller.UserController;
-import com.example.usermanager.Entity.User;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet(name = "UserServlet", urlPatterns = "/users")
 public class UserServlet extends HttpServlet {
-    protected ArrayList<User> users;
     protected UserController userController;
     @Override
     public void init() throws ServletException {
-        users = new ArrayList<User>();
-        users.add(new User("John", "John@gmail.com", "00990898", "Ha Noi"));
-        users.add(new User("Jeff", "Jeff1@gmail.com", "00990898", "Ha Noi"));
-        users.add(new User("Jeff2", "Jeff2@gmail.com", "00990898", "Ha Noi"));
-        users.add(new User("Jeff3", "Jeff3@gmail.com", "00990898", "Ha Noi"));
-        users.add(new User("Jeff3", "Jeff4@gmail.com", "00990898", "Ha Noi"));
-        userController = new UserController(users);
+        userController = new UserController();
     }
 
     @Override

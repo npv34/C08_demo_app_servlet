@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.Objects" %><%--
   Created by IntelliJ IDEA.
   User: ad
   Date: 29/11/2023
@@ -20,8 +20,20 @@
     <div class="col-12 col-md-12">
         <div class="card">
             <div class="card-header">
-                User Management
-                <a href="/users?action=create" class="btn btn-success">Add new</a>
+                <div class="row">
+                    <div class="col-md-6">
+                        User Management
+                        <a href="/users?action=create" class="btn btn-success">Add new</a>
+                    </div>
+                    <div class="col-md-6">
+                        <form action="/users" method="get">
+                            <input type="text" name="keyword" value="">
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+
+
             </div>
             <div class="card-body">
                 <table class="table">
@@ -45,8 +57,8 @@
 
                         <td><c:out value="${user.getAddress()}"/></td>
                         <td>
-                            <a onclick="return confirm('Are you sure?')" href="${pageContext.request.contextPath}/users?action=delete&email=<c:out value="${user.getEmail()}"/>" class="btn btn-danger">Delete</a>
-                            <a href="${pageContext.request.contextPath}/users?action=update&email=<c:out value="${user.getEmail()}"/>" class="btn btn-primary">Update</a>
+                            <a onclick="return confirm('Are you sure?')" href="${pageContext.request.contextPath}/users?action=delete&id=<c:out value="${user.getId()}"/>" class="btn btn-danger">Delete</a>
+                            <a href="${pageContext.request.contextPath}/users?action=update&id=<c:out value="${user.getId()}"/>" class="btn btn-primary">Update</a>
                         </td>
                     </tr>
                     </c:forEach>

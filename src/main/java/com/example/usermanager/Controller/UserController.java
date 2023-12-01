@@ -1,53 +1,74 @@
 package com.example.usermanager.Controller;
 
 import com.example.usermanager.Entity.User;
+import com.example.usermanager.Model.UserDAO;
+import com.example.usermanager.Model.UserModel;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserController {
-    protected ArrayList<User> users;
 
-    public UserController(ArrayList<User> users) {
-        this.users = users;
+    protected UserDAO userDAO;
+
+    public UserController() {
+        this.userDAO = new UserModel();
     }
 
     public void updateUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
         String email = req.getParameter("email");
-        int index = getIndexUser(email);
-        User user = users.get(index);
-
-        String newName = req.getParameter("name");
         String newPhone = req.getParameter("phone");
         String newAddress = req.getParameter("address");
-        user.setName(newName);
-        user.setPhone(newPhone);
-        user.setAddress(newAddress);
-
-        users.set(index, user);
+        String role = req.getParameter("role");
+        User user = new User(name, email, newPhone, newAddress);
+        user.setRole(role);
+        user.setId(id);
+        this.userDAO.update(user);
         resp.sendRedirect("/users");
     }
 
     public void storeUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        String phone = req.getParameter("phone");
-        String address = req.getParameter("address");
-        String role = req.getParameter("role");
-        User user = new User(name, email, phone, address);
-        user.setRole(role);
-        users.add(user);
-        resp.sendRedirect("/users");
+        try {
+            String name = req.getParameter("name");
+            String email = req.getParameter("email");
+            String phone = req.getParameter("phone");
+            String address = req.getParameter("address");
+            String role = req.getParameter("role");
+            String password = req.getParameter("password");
+            User user = new User(name, email, phone, address);
+            user.setPassword(password);
+            user.setRole(role);
+            this.userDAO.save(user);
+            resp.sendRedirect("/users");
+        }catch (SQLException e) {
+            System.out.println("Error add user: " + e.getMessage());
+        }
     }
 
     public void showListUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("users", users);
-        RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/users/list.jsp");
-        view.forward(req, resp);
+        try {
+            String keyword = req.getParameter("keyword");
+            List<User> data;
+            if (keyword == null) {
+                data =  this.userDAO.getAll();
+            } else {
+                data =  this.userDAO.search(keyword);
+            }
+
+            req.setAttribute("users", data);
+            RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/users/list.jsp");
+            view.forward(req, resp);
+        }catch (SQLException e) {
+            System.out.println(e.getMessage() + "Error list");
+        }
     }
 
     public void showFormCreate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -56,35 +77,16 @@ public class UserController {
     }
 
     public void showFormUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        int index = getIndexUser(email);
-        User user = users.get(index);
+        int id = Integer.parseInt(req.getParameter("id"));
+        User user = this.userDAO.getById(id);
         req.setAttribute("user", user);
         RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/users/update.jsp");
         view.forward(req, resp);
     }
 
     public void deleteUser(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String email = req.getParameter("email");
-        int index = getIndexUser(email);
-
-        if (index == -1) {
-            throw new Exception("User not exist!");
-        } else {
-            users.remove(index);
-            resp.sendRedirect("/users");
-        }
-    }
-
-    private int getIndexUser(String email) {
-        int index = -1;
-        // tim vi tri index cua user can xoa
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getEmail().equals(email)) {
-                index = i;
-                break;
-            }
-        }
-        return index;
+        int id = Integer.parseInt(req.getParameter("id"));
+        this.userDAO.delete(id);
+        resp.sendRedirect("/users");
     }
 }

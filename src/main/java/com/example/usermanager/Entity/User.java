@@ -1,11 +1,12 @@
 package com.example.usermanager.Entity;
 
 public class User {
+    protected int id;
     protected String name;
     protected String email;
     protected String phone;
     protected String address;
-
+    protected String password;
     protected String role;
 
     public User(String name, String email, String phone, String address) {
@@ -13,6 +14,20 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+
+    public User(int id, String name,
+                String email,
+                String password,
+                String phone,
+                String address, String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
     }
 
     public void setRole(String role) {
@@ -50,6 +65,23 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public String getRole() {
         return role != null ? role : "Chua phan loai";

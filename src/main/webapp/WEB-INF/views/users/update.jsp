@@ -22,7 +22,7 @@
         Update user
       </div>
       <div class="card-body">
-        <form action="${pageContext.request.contextPath}/users?action=update&email=<c:out value="${user.getEmail()}"/>" method="post">
+        <form action="${pageContext.request.contextPath}/users?action=update&id=<c:out value="${user.getId()}"/>" method="post">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Name</label>
             <input type="text" name="name" value="<c:out value="${user.getName()}"/>" class="form-control" id="" aria-describedby="emailHelp">
@@ -38,6 +38,13 @@
           <div class="mb-3">
             <label for="" class="form-label">Address</label>
             <input type="text" name="address" value="<c:out value="${user.getAddress()}"/>" class="form-control" id="address">
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Role</label>
+            <select name="role" id="role">
+              <option <c:if test="${user.getRole() == 'admin'}"> selected </c:if> value="admin">Admin</option>
+              <option <c:if test="${user.getRole() == 'user'}"> selected </c:if>  value="user">User</option>
+            </select>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
           <a href="/users" class="btn btn-info">Cancel</a>

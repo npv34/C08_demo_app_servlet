@@ -25,11 +25,15 @@
         <form action="/users?action=create" method="post">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Name</label>
-            <input type="text" name="name" class="form-control" id="" aria-describedby="emailHelp">
+            <input type="text" name="name" class="form-control" id="" aria-describedby="name">
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="password" aria-describedby="password">
           </div>
           <div class="mb-3">
             <label for="" class="form-label">Phone</label>
@@ -43,7 +47,7 @@
             <label for="" class="form-label">Role</label>
             <select name="role" id="role">
               <option value="admin">Admin</option>
-              <option value="admin">User</option>
+              <option value="user">User</option>
             </select>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
