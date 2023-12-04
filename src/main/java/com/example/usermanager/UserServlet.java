@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "UserServlet", urlPatterns = "/users")
 public class UserServlet extends HttpServlet {
@@ -45,12 +46,14 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action") != null ? req.getParameter("action") : "";
+
         switch (action) {
             case "create":
                 userController.storeUser(req, resp);
                 break;
             case "update":
                 userController.updateUser(req, resp);
+
                 break;
         }
     }

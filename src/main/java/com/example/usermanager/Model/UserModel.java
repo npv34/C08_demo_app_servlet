@@ -2,6 +2,7 @@ package com.example.usermanager.Model;
 
 import com.example.usermanager.Database.Database;
 import com.example.usermanager.Entity.User;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -75,8 +76,9 @@ public class UserModel implements UserDAO{
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user) throws SQLException {
         try {
+            conn.setAutoCommit(false);
             String sql = "UPDATE users SET name = ?, phone = ?, address = ?, role = ? WHERE id = ?  ";
             PreparedStatement statement = conn.prepareStatement(sql);
             // gan gia tri cho tham so id
@@ -87,9 +89,13 @@ public class UserModel implements UserDAO{
             statement.setInt(5, user.getId());
             // thu hien truy van
             statement.execute();
+            this.updateUser2();
+            conn.commit();
         }catch (SQLException e) {
-            System.out.println("Update user fail" + e.getMessage());
+            conn.rollback();
+            System.out.println(e.getMessage());
         }
+
     }
 
     @Override
@@ -110,6 +116,35 @@ public class UserModel implements UserDAO{
                 String address = rs.getString(6);
                 String role = rs.getString(7);
                 user = new User(name, email, phone, address);
+                user.setRole(role);
+                user.setId(id);
+            }
+        }catch (SQLException e) {
+            System.out.println("Get user fail" + e.getMessage());
+        }
+        return user;
+    }
+
+    @Override
+    public User getAccount(String email, String password) {
+        User user = null;
+        try {
+            String sql = "SELECT * FROM  users WHERE email = ? AND password = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            // gan gia tri cho tham so id
+            statement.setString(1, email);
+            statement.setString(2, password);
+            // thu hien truy van
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String emailUser = rs.getString(3);
+                String phone = rs.getString(4);
+                String address = rs.getString(6);
+                String role = rs.getString(7);
+                user = new User(name, emailUser, phone, address);
                 user.setRole(role);
                 user.setId(id);
             }
@@ -142,7 +177,24 @@ public class UserModel implements UserDAO{
         }catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         return users;
+    }
+
+    public void updateUser2() throws SQLException {
+
+        String sql = "UPDATE users SET name = ?, phone = ?, address = ?, role = ? WHERE id = ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        // gan gia tri cho tham so id
+        statement.setString(1, "nam 123");
+        statement.setString(2, "0099900");
+        statement.setString(3, "HHN");
+        statement.setString(4, "admin");
+        statement.setInt(5, 7);
+        boolean status = statement.execute();
+        System.out.println(status);
+        // thu hien truy van
+        if (!status) {
+            throw new SQLException("Unexpected statement");
+        }
     }
 }

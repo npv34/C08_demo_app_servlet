@@ -7,5 +7,6 @@
 <body>
 <h2>User manager</h2>
 <a href="/users">List user</a>
+<a href="/login">Login</a>
 </body>
 </html>

@@ -22,17 +22,24 @@ public class UserController {
     }
 
     public void updateUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        String newPhone = req.getParameter("phone");
-        String newAddress = req.getParameter("address");
-        String role = req.getParameter("role");
-        User user = new User(name, email, newPhone, newAddress);
-        user.setRole(role);
-        user.setId(id);
-        this.userDAO.update(user);
-        resp.sendRedirect("/users");
+
+        try {
+            int id = Integer.parseInt(req.getParameter("id"));
+            String name = req.getParameter("name");
+            String email = req.getParameter("email");
+            String newPhone = req.getParameter("phone");
+            String newAddress = req.getParameter("address");
+            String role = req.getParameter("role");
+            User user = new User(name, email, newPhone, newAddress);
+            user.setRole(role);
+            user.setId(id);
+            this.userDAO.update(user);
+
+            resp.sendRedirect("/users");
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public void storeUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -62,7 +69,7 @@ public class UserController {
             } else {
                 data =  this.userDAO.search(keyword);
             }
-
+            req.setAttribute("keyword", keyword);
             req.setAttribute("users", data);
             RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/users/list.jsp");
             view.forward(req, resp);
